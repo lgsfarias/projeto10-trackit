@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 import Logo from '../assets/img/logoTrackIt.png';
 
 const Login = () => {
@@ -11,7 +12,18 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(email, password);
-        navigate('/habitos');
+        axios
+            .post(
+                'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login',
+                {
+                    email,
+                    password,
+                }
+            )
+            .then((response) => console.log(response))
+            .catch(console.log);
+
+        // navigate('/habitos');
     };
 
     return (
