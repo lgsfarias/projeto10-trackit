@@ -1,9 +1,74 @@
+import { useNavigate, Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+
 const Menu = () => {
+    const navigate = useNavigate();
+    const percentage = 66;
+
     return (
-        <div className="Menu">
-            <h1>Aqui é o menu</h1>
-        </div>
+        <MenuContainer>
+            <p onClick={() => navigate('/habitos')}>Hábitos</p>
+            <Link to="/hoje">
+                <CircularProgressbar
+                    className="progressbar"
+                    value={percentage}
+                    text={'Hoje'}
+                    background={true}
+                    backgroundPadding={6}
+                    styles={{
+                        path: {
+                            stroke: `#fff`,
+                            strokeLinecap: 'round',
+                        },
+                        trail: {
+                            stroke: '#52b6ff',
+                            strokeLinecap: 'round',
+                        },
+                        text: {
+                            fill: '#fff',
+                            fontSize: '18px',
+                            fontFamily: 'Lexend Deca',
+                        },
+                        background: {
+                            fill: '#52b6ff',
+                        },
+                    }}
+                />
+            </Link>
+            <p onClick={() => navigate('/historico')}>Histórico</p>
+        </MenuContainer>
     );
 };
 
 export default Menu;
+
+const MenuContainer = styled.div`
+    z-index: 1;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+
+    p {
+        font-family: 'Lexend Deca';
+        font-size: 18px;
+        color: #52b6ff;
+        cursor: pointer;
+    }
+
+    .progressbar {
+        position: absolute;
+        bottom: 10px;
+        right: 0;
+        left: 0;
+        margin: auto;
+        width: 90px;
+    }
+`;

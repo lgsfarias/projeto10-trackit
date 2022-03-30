@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import UserContext from './contexts/UserContext';
 import TokenContext from './contexts/TokenContext';
@@ -14,21 +14,30 @@ import Menu from './components/Menu';
 const App = () => {
     const [token, setToken] = useState('');
     const [user, setUser] = useState({});
+    const location = useLocation();
 
     return (
         <UserContext.Provider value={{ user, setUser }}>
             <TokenContext.Provider value={{ token, setToken }}>
-                <Router>
-                    <Header />
-                    <Routes>
-                        <Route path="/" element={<Login />} />
-                        <Route path="/cadastro" element={<SignUp />} />
-                        <Route path="/habitos" element={<Habits />} />
-                        <Route path="/hoje" element={<Today />} />
-                        <Route path="/historico" element={<History />} />
-                    </Routes>
-                    <Menu />
-                </Router>
+                {!(
+                    location.pathname === '/' ||
+                    location.pathname === '/cadastro'
+                ) ? (
+                    <>
+                        <Header />
+                        <Menu />
+                    </>
+                ) : (
+                    <></>
+                )}
+                {/* <Header /> */}
+                <Routes>
+                    <Route path="/" element={<Login />} />
+                    <Route path="/cadastro" element={<SignUp />} />
+                    <Route path="/habitos" element={<Habits />} />
+                    <Route path="/hoje" element={<Today />} />
+                    <Route path="/historico" element={<History />} />
+                </Routes>
             </TokenContext.Provider>
         </UserContext.Provider>
     );
