@@ -1,18 +1,35 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
+
 import Logo from '../assets/img/logoTrackIt.png';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    const [photo, setPhoto] = useState('');
+    const [image, setImage] = useState('');
+
+    const postURL =
+        'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up';
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(email, password, name, photo);
+        axios
+            .post(postURL, {
+                email: email,
+                name: name,
+                image: image,
+                password: password,
+            })
+            .then((response) => {
+                console.log(response);
+                navigate('/login');
+            })
+            .catch(console.log);
+        console.log(email, password, name, image);
     };
 
     return (
@@ -44,11 +61,11 @@ const SignUp = () => {
                     value={name}
                 />
                 <input
-                    onChange={(e) => setPhoto(e.target.value)}
+                    onChange={(e) => setImage(e.target.value)}
                     type="text"
                     placeholder="foto"
                     required
-                    value={photo}
+                    value={image}
                 />
                 <input type="submit" value="Cadastrar" />
             </form>
