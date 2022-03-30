@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+
+import UserContext from '../contexts/UserContext';
+import TokenContext from '../contexts/TokenContext';
 import Logo from '../assets/img/logoTrackIt.png';
 
 const Login = () => {
@@ -9,9 +13,11 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    const { setUser } = useContext(UserContext);
+    const { setToken } = useContext(TokenContext);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(email, password);
         axios
             .post(
                 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login',
@@ -20,10 +26,12 @@ const Login = () => {
                     password,
                 }
             )
-            .then((response) => console.log(response))
+            .then((response) => {
+                setUser(response.data);
+                setToken(response.data.token);
+                navigate('/habitos');
+            })
             .catch(console.log);
-
-        // navigate('/habitos');
     };
 
     return (

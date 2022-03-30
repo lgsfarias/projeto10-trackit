@@ -11,12 +11,12 @@ const SignUp = () => {
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
 
-    const postURL =
-        'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up';
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const postURL =
+            'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up';
         axios
             .post(postURL, {
                 email: email,

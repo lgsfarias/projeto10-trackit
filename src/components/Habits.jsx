@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
-
 import { BsTrash } from 'react-icons/bs';
+import UserContext from '../contexts/UserContext';
+import TokenContext from '../contexts/TokenContext';
 
 const Habits = () => {
     // const [habits, setHabits] = useState(new Map());
     const [habits, setHabits] = useState([1, 2, 3]);
     // const [habits, setHabits] = useState();
 
+    const { user, setUser } = useContext(UserContext);
+    const { token, setToken } = useContext(TokenContext);
+
+    useEffect(() => {
+        console.log(user);
+        console.log(token);
+        setHabits(user.habits);
+    }, []);
     return (
         <HabitsContainer>
             <div className="header">

@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import SpongeBob from '../assets/img/SpongeBob.png';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
 
 const Header = () => {
+    const { user } = useContext(UserContext);
     return (
         <HeaderContainer>
             <h1>TrackIt</h1>
-            <img src={SpongeBob} alt="spongebob" />
+            <img src={user.image ? user.image : SpongeBob} alt="spongebob" />
         </HeaderContainer>
     );
 };
@@ -34,6 +37,9 @@ const HeaderContainer = styled.div`
 
     img {
         width: 50px;
+        height: 50px;
+        object-fit: cover;
+        object-position: center;
         border-radius: 50%;
         border: 1px solid #fff;
     }
