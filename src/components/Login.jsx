@@ -11,7 +11,7 @@ import Logo from '../assets/img/logoTrackIt.png';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const { setUser } = useContext(UserContext);
@@ -63,7 +63,11 @@ const Login = () => {
                     disabled={loading ? true : false}
                 />
                 <button type="submit">
-                    {loading ? <ThreeDots color="#fff" /> : 'Entrar'}
+                    {loading ? (
+                        <ThreeDots color="#fff" height={13} />
+                    ) : (
+                        'Entrar'
+                    )}
                 </button>
                 {/* <input type="submit" value="Entrar" /> */}
             </form>

@@ -4,10 +4,11 @@ import { BsTrash } from 'react-icons/bs';
 import UserContext from '../contexts/UserContext';
 import TokenContext from '../contexts/TokenContext';
 import axios from 'axios';
+import CreateHabit from './CreateHabit';
 
 const Habits = () => {
     const [habits, setHabits] = useState();
-
+    const [formHabitVisible, setFormHabitVisible] = useState(false);
     const { user } = useContext(UserContext);
     const { token } = useContext(TokenContext);
 
@@ -23,21 +24,6 @@ const Habits = () => {
                 </div>
             );
         });
-    };
-
-    const createHabit = () => {
-        const URL =
-            'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
-
-        const body = { name: 'Meditar', days: [1, 2, 3, 4, 5, 6, 7] };
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
-
-        axios.post(URL, body, config).then(listHabits).catch(console.log);
     };
 
     const listHabits = () => {
@@ -83,8 +69,15 @@ const Habits = () => {
         <HabitsContainer>
             <div className="header">
                 <h1>Meus hábitos</h1>
-                <button onClick={createHabit}>+</button>
+                <button onClick={() => setFormHabitVisible(!formHabitVisible)}>
+                    +
+                </button>
             </div>
+            <CreateHabit
+                formHabitVisible={formHabitVisible}
+                setFormHabitVisible={setFormHabitVisible}
+                listHabits={() => listHabits()}
+            />
             <div className="habits">
                 {habits ? (
                     habits.map(({ id, name, days }) => (
@@ -142,6 +135,7 @@ const HabitsContainer = styled.div`
             color: #ffffff;
             font-size: 26.976px;
             text-align: center;
+            cursor: pointer;
         }
     }
 
