@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { ThreeDots } from 'react-loader-spinner';
 
 import UserContext from '../contexts/UserContext';
 import TokenContext from '../contexts/TokenContext';
@@ -11,6 +11,7 @@ import Logo from '../assets/img/logoTrackIt.png';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState('');
     const navigate = useNavigate();
 
     const { setUser } = useContext(UserContext);
@@ -18,6 +19,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true);
         axios
             .post(
                 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login',
@@ -31,7 +33,10 @@ const Login = () => {
                 setToken(response.data.token);
                 navigate('/habitos');
             })
-            .catch(console.log);
+            .catch((error) => {
+                alert('Usuário ou senha inválidos');
+                setLoading(false);
+            });
     };
 
     return (
@@ -47,6 +52,7 @@ const Login = () => {
                     placeholder="email"
                     required
                     value={email}
+                    disabled={loading ? true : false}
                 />
                 <input
                     onChange={(e) => setPassword(e.target.value)}
@@ -54,8 +60,12 @@ const Login = () => {
                     placeholder="senha"
                     required
                     value={password}
+                    disabled={loading ? true : false}
                 />
-                <input type="submit" value="Entrar" />
+                <button type="submit">
+                    {loading ? <ThreeDots color="#fff" /> : 'Entrar'}
+                </button>
+                {/* <input type="submit" value="Entrar" /> */}
             </form>
             <h1 className="link" onClick={() => navigate('/cadastro')}>
                 Não tem um conta? Cadastre-se!
@@ -117,9 +127,23 @@ const LoginContainer = styled.div`
             color: #dbdbdb;
         }
 
-        input[type='submit'] {
+        button[type='submit'] {
+            width: 300px;
+            height: 45px;
+            border-radius: 5px;
+            border: 1px solid #d5d5d5;
+            padding: 11px;
+            margin-bottom: 6px;
+
+            font-family: 'Lexend Deca';
+            font-size: 20px;
+
+            outline: none;
             background: #52b6ff;
             color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 

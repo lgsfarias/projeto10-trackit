@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import { ThreeDots } from 'react-loader-spinner';
 
 import Logo from '../assets/img/logoTrackIt.png';
 
@@ -10,26 +11,33 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const postURL =
-            'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up';
+        setLoading(true);
+
         axios
-            .post(postURL, {
-                email: email,
-                name: name,
-                image: image,
-                password: password,
-            })
+            .post(
+                'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up',
+                {
+                    email: email,
+                    name: name,
+                    image: image,
+                    password: password,
+                }
+            )
             .then((response) => {
                 console.log(response);
-                navigate('/login');
+                navigate('/');
             })
-            .catch(console.log);
-        console.log(email, password, name, image);
+            .catch((error) => {
+                console.log(error);
+                alert(error);
+                setLoading(false);
+            });
     };
 
     return (
@@ -45,6 +53,7 @@ const SignUp = () => {
                     placeholder="email"
                     required
                     value={email}
+                    disabled={loading ? true : false}
                 />
                 <input
                     onChange={(e) => setPassword(e.target.value)}
@@ -52,6 +61,7 @@ const SignUp = () => {
                     placeholder="senha"
                     required
                     value={password}
+                    disabled={loading ? true : false}
                 />
                 <input
                     onChange={(e) => setName(e.target.value)}
@@ -59,6 +69,7 @@ const SignUp = () => {
                     placeholder="nome"
                     required
                     value={name}
+                    disabled={loading ? true : false}
                 />
                 <input
                     onChange={(e) => setImage(e.target.value)}
@@ -66,8 +77,11 @@ const SignUp = () => {
                     placeholder="foto"
                     required
                     value={image}
+                    disabled={loading ? true : false}
                 />
-                <input type="submit" value="Cadastrar" />
+                <button type="submit">
+                    {loading ? <ThreeDots color="#fff" /> : 'Cadastrar'}
+                </button>
             </form>
             <h1 className="link" onClick={() => navigate('/')}>
                 Já tem uma conta? Faça login!
@@ -129,9 +143,23 @@ const SignUpContainer = styled.div`
             color: #dbdbdb;
         }
 
-        input[type='submit'] {
+        button[type='submit'] {
+            width: 300px;
+            height: 45px;
+            border-radius: 5px;
+            border: 1px solid #d5d5d5;
+            padding: 11px;
+            margin-bottom: 6px;
+
+            font-family: 'Lexend Deca';
+            font-size: 20px;
+
+            outline: none;
             background: #52b6ff;
             color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 
