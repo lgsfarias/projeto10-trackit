@@ -11,11 +11,25 @@ const Habits = () => {
     const { user } = useContext(UserContext);
     const { token } = useContext(TokenContext);
 
+    const daysBuilder = ({ days }) => {
+        const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+        return weekDays.map((day, index) => {
+            const css = days.includes(index + 1)
+                ? 'habit-day habit-day--active'
+                : 'habit-day habit-day--inactive';
+            return (
+                <div key={index + 1} className={css}>
+                    <p>{day}</p>
+                </div>
+            );
+        });
+    };
+
     const createHabit = () => {
         const URL =
             'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
 
-        const body = { name: 'Correr 10Km', days: [2, 4, 6] };
+        const body = { name: 'Meditar', days: [1, 2, 3, 4, 5, 6, 7] };
 
         const config = {
             headers: {
@@ -23,7 +37,7 @@ const Habits = () => {
             },
         };
 
-        axios.post(URL, body, config).then(console.log).catch(console.log);
+        axios.post(URL, body, config).then(listHabits).catch(console.log);
     };
 
     const listHabits = () => {
@@ -44,6 +58,20 @@ const Habits = () => {
             .catch(alert);
     };
 
+    const deleteHabit = (id) => {
+        if (window.confirm('Deseja realmente excluir esse hábito?')) {
+            const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`;
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
+            axios.delete(URL, config).then(listHabits).catch(alert);
+        }
+    };
+
     useEffect(() => {
         console.log(user);
         console.log(token);
@@ -59,10 +87,14 @@ const Habits = () => {
             </div>
             <div className="habits">
                 {habits ? (
-                    habits.map(({ id, name }) => (
+                    habits.map(({ id, name, days }) => (
                         <div className="habit" key={id}>
                             <p className="title">{name}</p>
-                            <BsTrash className="trash" />
+                            <div className="days">{daysBuilder({ days })}</div>
+                            <BsTrash
+                                className="trash"
+                                onClick={() => deleteHabit(id)}
+                            />
                         </div>
                     ))
                 ) : (
@@ -134,11 +166,47 @@ const HabitsContainer = styled.div`
                 color: #666666;
             }
 
+            .days {
+                margin-top: 10px;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+
+                .habit-day {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 5px;
+                    margin-right: 4px;
+
+                    &--active {
+                        background: #cfcfcf;
+                        border: 1px solid #cfcfcf;
+
+                        p {
+                            color: #ffffff;
+                        }
+                    }
+
+                    &--inactive {
+                        background: #ffffff;
+                        border: 1px solid #d5d5d5;
+
+                        p {
+                            color: #dbdbdb;
+                        }
+                    }
+                }
+            }
+
             .trash {
                 position: absolute;
-                top: 10px;
+                top: 15px;
                 right: 10px;
-                font-size: 15px;
+                font-size: 20px;
             }
         }
 
