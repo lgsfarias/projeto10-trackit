@@ -3,31 +3,65 @@ import styled from 'styled-components';
 import { BsTrash } from 'react-icons/bs';
 import UserContext from '../contexts/UserContext';
 import TokenContext from '../contexts/TokenContext';
+import axios from 'axios';
 
 const Habits = () => {
-    // const [habits, setHabits] = useState(new Map());
-    const [habits, setHabits] = useState([1, 2, 3]);
-    // const [habits, setHabits] = useState();
+    const [habits, setHabits] = useState();
 
-    const { user, setUser } = useContext(UserContext);
-    const { token, setToken } = useContext(TokenContext);
+    const { user } = useContext(UserContext);
+    const { token } = useContext(TokenContext);
+
+    const createHabit = () => {
+        const URL =
+            'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
+
+        const body = { name: 'Correr 10Km', days: [2, 4, 6] };
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        axios.post(URL, body, config).then(console.log).catch(console.log);
+    };
+
+    const listHabits = () => {
+        const URL =
+            'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        axios
+            .get(URL, config)
+            .then((response) => {
+                setHabits(response.data);
+            })
+            .catch(alert);
+    };
 
     useEffect(() => {
         console.log(user);
         console.log(token);
-        setHabits(user.habits);
+        listHabits();
+        // eslint-disable-next-line  react-hooks/exhaustive-deps
     }, []);
+
     return (
         <HabitsContainer>
             <div className="header">
                 <h1>Meus hábitos</h1>
-                <button>+</button>
+                <button onClick={createHabit}>+</button>
             </div>
             <div className="habits">
                 {habits ? (
-                    habits.map((key) => (
-                        <div className="habit" key={key}>
-                            <p className="title">Ler 1 capítulo de livro</p>
+                    habits.map(({ id, name }) => (
+                        <div className="habit" key={id}>
+                            <p className="title">{name}</p>
                             <BsTrash className="trash" />
                         </div>
                     ))
