@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { BsTrash } from 'react-icons/bs';
-import UserContext from '../contexts/UserContext';
 import TokenContext from '../contexts/TokenContext';
 import axios from 'axios';
 import CreateHabit from './CreateHabit';
@@ -9,7 +8,6 @@ import CreateHabit from './CreateHabit';
 const Habits = () => {
     const [habits, setHabits] = useState();
     const [formHabitVisible, setFormHabitVisible] = useState(false);
-    const { user } = useContext(UserContext);
     const { token } = useContext(TokenContext);
 
     const daysBuilder = ({ days }) => {
@@ -40,7 +38,6 @@ const Habits = () => {
             .get(URL, config)
             .then((response) => {
                 setHabits(response.data);
-                console.log(habits);
             })
             .catch(alert);
     };
@@ -60,8 +57,6 @@ const Habits = () => {
     };
 
     useEffect(() => {
-        console.log(user);
-        console.log(token);
         listHabits();
         // eslint-disable-next-line  react-hooks/exhaustive-deps
     }, []);

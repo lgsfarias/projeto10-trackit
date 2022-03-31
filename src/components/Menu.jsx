@@ -1,11 +1,14 @@
+import { useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
+import UserContext from '../contexts/UserContext';
+
 const Menu = () => {
+    const { completedStatus } = useContext(UserContext);
     const navigate = useNavigate();
-    const percentage = 66;
 
     return (
         <MenuContainer>
@@ -13,7 +16,7 @@ const Menu = () => {
             <Link to="/hoje">
                 <CircularProgressbar
                     className="progressbar"
-                    value={percentage}
+                    value={completedStatus}
                     text={'Hoje'}
                     background={true}
                     backgroundPadding={6}

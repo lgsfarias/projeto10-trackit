@@ -14,10 +14,13 @@ import Menu from './components/Menu';
 const App = () => {
     const [token, setToken] = useState('');
     const [user, setUser] = useState({});
+    const [completedStatus, setCompletedStatus] = useState(0);
     const location = useLocation();
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider
+            value={{ user, setUser, completedStatus, setCompletedStatus }}
+        >
             <TokenContext.Provider value={{ token, setToken }}>
                 {!(
                     location.pathname === '/' ||
