@@ -1,12 +1,37 @@
 import styled from 'styled-components';
 import SpongeBob from '../assets/img/SpongeBob.png';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserContext from '../contexts/UserContext';
+import { GoThreeBars } from 'react-icons/go';
 
 const Header = () => {
     const { user } = useContext(UserContext);
+    const navigate = useNavigate();
+    const [menuVisible, setMenuVisible] = useState(false);
+
     return (
-        <HeaderContainer>
+        <HeaderContainer menuVisible={menuVisible}>
+            <div className="menu">
+                <GoThreeBars
+                    fill="#ffffff"
+                    className="menu-icon"
+                    onClick={() => {
+                        setMenuVisible(!menuVisible);
+                    }}
+                />
+                {menuVisible && (
+                    <p
+                        onClick={() => {
+                            localStorage.removeItem('user');
+                            navigate('/');
+                            console.log('clique');
+                        }}
+                    >
+                        Sair
+                    </p>
+                )}
+            </div>
             <h1>TrackIt</h1>
             <img src={user.image ? user.image : SpongeBob} alt="spongebob" />
         </HeaderContainer>
@@ -16,8 +41,9 @@ const Header = () => {
 export default Header;
 
 const HeaderContainer = styled.div`
+    position: relative;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     position: fixed;
     top: 0;
@@ -29,6 +55,31 @@ const HeaderContainer = styled.div`
     background: #126ba5;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 
+    .menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: ${({ menuVisible }) => (menuVisible ? '20px' : '0')};
+        padding: ${({ menuVisible }) => (menuVisible ? '10px' : '0')};
+        box-shadow: ${({ menuVisible }) =>
+            menuVisible ? 'inset -2px 1px 6px 1px rgba(0, 0, 0, 0.1)' : 'none'};
+        transition: all 0.3s ease-in-out;
+
+        p {
+            font-family: 'Lexend Deca';
+            color: #ffffff;
+            font-size: 20px;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        .menu-icon {
+            font-size: 30px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    }
+
     h1 {
         font-family: 'Playball';
         font-size: 40px;
@@ -36,6 +87,8 @@ const HeaderContainer = styled.div`
     }
 
     img {
+        position: absolute;
+        right: 18px;
         width: 50px;
         height: 50px;
         object-fit: cover;

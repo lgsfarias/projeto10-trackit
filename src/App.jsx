@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 import UserContext from './contexts/UserContext';
@@ -12,10 +12,18 @@ import Header from './components/Header';
 import Menu from './components/Menu';
 
 const App = () => {
-    const [token, setToken] = useState('');
+    const [token, setToken] = useState(null);
     const [user, setUser] = useState({});
     const [completedStatus, setCompletedStatus] = useState(0);
     const location = useLocation();
+
+    useEffect(() => {
+        if (localStorage.getItem('user')) {
+            setUser(JSON.parse(localStorage.getItem('user')));
+            setToken(JSON.parse(localStorage.getItem('user')).token);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <UserContext.Provider

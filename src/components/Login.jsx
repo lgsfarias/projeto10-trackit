@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -29,6 +29,7 @@ const Login = () => {
                 }
             )
             .then((response) => {
+                localStorage.setItem('user', JSON.stringify(response.data));
                 setUser(response.data);
                 setToken(response.data.token);
                 navigate('/hoje');
@@ -38,6 +39,15 @@ const Login = () => {
                 setLoading(false);
             });
     };
+
+    useEffect(() => {
+        if (localStorage.getItem('user')) {
+            setUser(JSON.parse(localStorage.getItem('user')));
+            setToken(JSON.parse(localStorage.getItem('user')).token);
+            navigate('/hoje');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <LoginContainer>

@@ -73,11 +73,16 @@ const Today = () => {
                         100
                 );
             })
-            .catch(alert);
+            .catch((err) => {
+                console.log(err.response);
+                alert(err.response.data.message);
+            });
     };
 
     useEffect(() => {
-        listTodayHabits();
+        if (localStorage.getItem('user')) {
+            listTodayHabits();
+        }
         // eslint-disable-next-line
     }, []);
 
