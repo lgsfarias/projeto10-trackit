@@ -32,8 +32,8 @@ const SignUp = () => {
             .then((response) => {
                 navigate('/');
             })
-            .catch((error) => {
-                alert(error);
+            .catch((err) => {
+                alert(err.response.data.message);
                 setLoading(false);
             });
     };

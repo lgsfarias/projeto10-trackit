@@ -25,7 +25,6 @@ const Header = () => {
                         onClick={() => {
                             localStorage.removeItem('user');
                             navigate('/');
-                            console.log('clique');
                         }}
                     >
                         Sair

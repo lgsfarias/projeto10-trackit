@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 import UserContext from './contexts/UserContext';
-import TokenContext from './contexts/TokenContext';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Habits from './components/Habits';
@@ -12,44 +11,36 @@ import Header from './components/Header';
 import Menu from './components/Menu';
 
 const App = () => {
-    const [token, setToken] = useState(null);
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(
+        localStorage.getItem('user')
+            ? JSON.parse(localStorage.getItem('user'))
+            : null
+    );
     const [completedStatus, setCompletedStatus] = useState(0);
     const location = useLocation();
-
-    useEffect(() => {
-        if (localStorage.getItem('user')) {
-            setUser(JSON.parse(localStorage.getItem('user')));
-            setToken(JSON.parse(localStorage.getItem('user')).token);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <UserContext.Provider
             value={{ user, setUser, completedStatus, setCompletedStatus }}
         >
-            <TokenContext.Provider value={{ token, setToken }}>
-                {!(
-                    location.pathname === '/' ||
-                    location.pathname === '/cadastro'
-                ) ? (
-                    <>
-                        <Header />
-                        <Menu />
-                    </>
-                ) : (
-                    <></>
-                )}
-                {/* <Header /> */}
-                <Routes>
-                    <Route path="/" element={<Login />} />
-                    <Route path="/cadastro" element={<SignUp />} />
-                    <Route path="/habitos" element={<Habits />} />
-                    <Route path="/hoje" element={<Today />} />
-                    <Route path="/historico" element={<History />} />
-                </Routes>
-            </TokenContext.Provider>
+            {!(
+                location.pathname === '/' || location.pathname === '/cadastro'
+            ) ? (
+                <>
+                    <Header />
+                    <Menu />
+                </>
+            ) : (
+                <></>
+            )}
+            {/* <Header /> */}
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/cadastro" element={<SignUp />} />
+                <Route path="/habitos" element={<Habits />} />
+                <Route path="/hoje" element={<Today />} />
+                <Route path="/historico" element={<History />} />
+            </Routes>
         </UserContext.Provider>
     );
 };

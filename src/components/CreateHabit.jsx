@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 
-import TokenContext from '../contexts/TokenContext';
+import UserContext from '../contexts/UserContext';
 
 const CreateHabit = ({ formHabitVisible, setFormHabitVisible, listHabits }) => {
     const [habit, setHabit] = useState({ name: '', days: [] });
     const [loading, setLoading] = useState(false);
-    const { token } = useContext(TokenContext);
+
+    const { user } = useContext(UserContext);
 
     const daysBuilder = () => {
         const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
@@ -46,7 +47,7 @@ const CreateHabit = ({ formHabitVisible, setFormHabitVisible, listHabits }) => {
 
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${user.token}`,
             },
         };
 
@@ -58,7 +59,7 @@ const CreateHabit = ({ formHabitVisible, setFormHabitVisible, listHabits }) => {
                 setLoading(false);
             })
             .catch((err) => {
-                alert(err);
+                alert(err.response.data.message);
                 setLoading(false);
             });
     };

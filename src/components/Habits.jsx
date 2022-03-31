@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { BsTrash } from 'react-icons/bs';
-import TokenContext from '../contexts/TokenContext';
+import UserContext from '../contexts/UserContext';
 import axios from 'axios';
 import CreateHabit from './CreateHabit';
 
 const Habits = () => {
     const [habits, setHabits] = useState();
     const [formHabitVisible, setFormHabitVisible] = useState(false);
-    const { token } = useContext(TokenContext);
+    const { user } = useContext(UserContext);
 
     const daysBuilder = ({ days }) => {
         const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
@@ -30,7 +30,7 @@ const Habits = () => {
 
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${user.token}`,
             },
         };
 
@@ -48,7 +48,7 @@ const Habits = () => {
 
             const config = {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${user.token}`,
                 },
             };
 

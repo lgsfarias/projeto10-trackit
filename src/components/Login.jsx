@@ -5,7 +5,6 @@ import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 
 import UserContext from '../contexts/UserContext';
-import TokenContext from '../contexts/TokenContext';
 import Logo from '../assets/img/logoTrackIt.png';
 
 const Login = () => {
@@ -15,7 +14,6 @@ const Login = () => {
     const navigate = useNavigate();
 
     const { setUser } = useContext(UserContext);
-    const { setToken } = useContext(TokenContext);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -31,7 +29,6 @@ const Login = () => {
             .then((response) => {
                 localStorage.setItem('user', JSON.stringify(response.data));
                 setUser(response.data);
-                setToken(response.data.token);
                 navigate('/hoje');
             })
             .catch((error) => {
@@ -43,7 +40,6 @@ const Login = () => {
     useEffect(() => {
         if (localStorage.getItem('user')) {
             setUser(JSON.parse(localStorage.getItem('user')));
-            setToken(JSON.parse(localStorage.getItem('user')).token);
             navigate('/hoje');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

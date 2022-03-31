@@ -4,14 +4,12 @@ import * as dayjs from 'dayjs';
 import axios from 'axios';
 
 import UserContext from '../contexts/UserContext';
-import TokenContext from '../contexts/TokenContext';
 import TodayHabit from './TodayHabit';
 
 const Today = () => {
     const [todayHabits, setTodayHabits] = useState();
-
-    const { token } = useContext(TokenContext);
-    const { completedStatus, setCompletedStatus } = useContext(UserContext);
+    const { user, completedStatus, setCompletedStatus } =
+        useContext(UserContext);
 
     const todayHabitsBuilder = () => {
         return todayHabits.map((habit) => {
@@ -36,7 +34,7 @@ const Today = () => {
 
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${user.token}`,
             },
         };
 
@@ -48,7 +46,7 @@ const Today = () => {
 
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${user.token}`,
             },
         };
 
@@ -60,7 +58,7 @@ const Today = () => {
             'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today';
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${user.token}`,
             },
         };
         axios
@@ -74,7 +72,6 @@ const Today = () => {
                 );
             })
             .catch((err) => {
-                console.log(err.response);
                 alert(err.response.data.message);
             });
     };
