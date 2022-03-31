@@ -15,11 +15,11 @@ const Habits = () => {
     const daysBuilder = ({ days }) => {
         const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
         return weekDays.map((day, index) => {
-            const css = days.includes(index + 1)
+            const css = days.includes(index === 0 ? 7 : index)
                 ? 'habit-day habit-day--active'
                 : 'habit-day habit-day--inactive';
             return (
-                <div key={index + 1} className={css}>
+                <div key={index} className={css}>
                     <p>{day}</p>
                 </div>
             );
@@ -40,6 +40,7 @@ const Habits = () => {
             .get(URL, config)
             .then((response) => {
                 setHabits(response.data);
+                console.log(habits);
             })
             .catch(alert);
     };
@@ -118,7 +119,7 @@ const HabitsContainer = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 28px;
+        margin-bottom: 20px;
 
         h1 {
             font-family: 'Lexend Deca';

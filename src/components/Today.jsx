@@ -1,10 +1,38 @@
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import * as dayjs from 'dayjs';
+import axios from 'axios';
+
+import TokenContext from '../contexts/TokenContext';
 
 const Today = () => {
+    const [todayHabits, setTodayHabits] = useState([]);
+
+    const { token } = useContext(TokenContext);
+
+    useEffect(() => {
+        const URL =
+            'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today';
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        axios
+            .get(URL, config)
+            .then((response) => {
+                setTodayHabits(response.data);
+            })
+            .catch(alert);
+        // eslint-disable-next-line
+    }, []);
+
     return (
         <TodayContainer>
             <div className="header">
-                <h1>Hoje</h1>
+                <h1>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
             </div>
             <div className="today">
                 <p>Você não tem nenhum hábito hoje!</p>

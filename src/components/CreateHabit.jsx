@@ -13,14 +13,16 @@ const CreateHabit = ({ formHabitVisible, setFormHabitVisible, listHabits }) => {
     const daysBuilder = () => {
         const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
         return weekDays.map((day, index) => {
-            const css = habit.days.includes(index + 1)
+            const css = habit.days.includes(index === 0 ? 7 : index)
                 ? 'habit-day habit-day--active'
                 : 'habit-day habit-day--inactive';
             return (
                 <div
-                    key={index + 1}
+                    key={index}
                     className={css}
-                    onClick={() => toggle(index + 1)}
+                    onClick={() => {
+                        if (!loading) toggle(index === 0 ? 7 : index);
+                    }}
                 >
                     <p>{day}</p>
                 </div>
@@ -109,9 +111,8 @@ const CreateHabitForm = styled.form`
     height: ${(props) => (props.formHabitVisible ? '180px' : '0px')};
     background-color: #fff;
     border-radius: 5px;
-    margin-bottom: 10px;
     padding: ${(props) => (props.formHabitVisible ? '15px' : '0px')};
-    margin-bottom: 30px;
+    margin-bottom: ${(props) => (props.formHabitVisible ? '30px' : '0px')};
     overflow: hidden;
     opacity: ${(props) => (props.formHabitVisible ? '1' : '0')};
     transition: 1s;

@@ -31,7 +31,7 @@ const Login = () => {
             .then((response) => {
                 setUser(response.data);
                 setToken(response.data.token);
-                navigate('/habitos');
+                navigate('/hoje');
             })
             .catch((error) => {
                 alert('Usuário ou senha inválidos');
