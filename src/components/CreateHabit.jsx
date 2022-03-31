@@ -72,41 +72,42 @@ const CreateHabit = ({ formHabitVisible, setFormHabitVisible, listHabits }) => {
     };
 
     return (
-        <CreateHabitForm
-            formHabitVisible={formHabitVisible}
-            onSubmit={handleSubmit}
-        >
-            <input
-                onChange={(e) => setHabit({ ...habit, name: e.target.value })}
-                value={habit.name}
-                type="text"
-                placeholder="Nome do hábito"
-                disabled={loading ? true : false}
-            />
-            <div className="days">{daysBuilder()}</div>
-            <div className="createHabit__form__footer">
-                <p
-                    onClick={() => {
-                        setFormHabitVisible(false);
-                    }}
-                >
-                    Cancelar
-                </p>
-                <button type="submit">
-                    {loading ? (
-                        <ThreeDots color="#fff" height={11} />
-                    ) : (
-                        'Salvar'
-                    )}
-                </button>
-            </div>
+        <CreateHabitForm formHabitVisible={formHabitVisible}>
+            <form onSubmit={handleSubmit}>
+                <input
+                    onChange={(e) =>
+                        setHabit({ ...habit, name: e.target.value })
+                    }
+                    value={habit.name}
+                    type="text"
+                    placeholder="Nome do hábito"
+                    disabled={loading ? true : false}
+                />
+                <div className="days">{daysBuilder()}</div>
+                <div className="createHabit__form__footer">
+                    <p
+                        onClick={() => {
+                            setFormHabitVisible(false);
+                        }}
+                    >
+                        Cancelar
+                    </p>
+                    <button type="submit">
+                        {loading ? (
+                            <ThreeDots color="#fff" height={11} />
+                        ) : (
+                            'Salvar'
+                        )}
+                    </button>
+                </div>
+            </form>
         </CreateHabitForm>
     );
 };
 
 export default CreateHabit;
 
-const CreateHabitForm = styled.form`
+const CreateHabitForm = styled.div`
     position: relative;
     width: 100%;
     height: ${(props) => (props.formHabitVisible ? '180px' : '0px')};
@@ -114,7 +115,6 @@ const CreateHabitForm = styled.form`
     border-radius: 5px;
     padding: ${(props) => (props.formHabitVisible ? '15px' : '0px')};
     margin-bottom: ${(props) => (props.formHabitVisible ? '30px' : '0px')};
-    overflow: hidden;
     opacity: ${(props) => (props.formHabitVisible ? '1' : '0')};
     transition: 1s;
 
@@ -137,6 +137,7 @@ const CreateHabitForm = styled.form`
 
     .days {
         margin-top: 10px;
+        margin-bottom: 65px;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -175,12 +176,13 @@ const CreateHabitForm = styled.form`
 
     .createHabit__form__footer {
         position: absolute;
-        right: 16px;
-        bottom: 16px;
+        right: 15px;
+        bottom: 15px;
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
         align-items: center;
+        display: ${(props) => (props.formHabitVisible ? 'flex' : 'none')};
         opacity: ${(props) => (props.formHabitVisible ? '1' : '0')};
         transition: 1s;
 

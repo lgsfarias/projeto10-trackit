@@ -124,6 +124,7 @@ const TodayContainer = styled.div`
     flex-direction: column;
     padding: 28px 18px;
     background: #e5e5e5;
+    overflow-y: auto;
 
     .header {
         display: flex;
