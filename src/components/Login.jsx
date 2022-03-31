@@ -27,7 +27,14 @@ const Login = () => {
                 }
             )
             .then((response) => {
-                localStorage.setItem('user', JSON.stringify(response.data));
+                localStorage.setItem(
+                    'user',
+                    JSON.stringify({
+                        token: response.data.token,
+                        image: response.data.image,
+                        name: response.data.name,
+                    })
+                );
                 setUser(response.data);
                 navigate('/hoje');
             })
