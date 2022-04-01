@@ -5,11 +5,20 @@ import 'react-calendar/dist/Calendar.css';
 import axios from 'axios';
 
 import UserContext from '../contexts/UserContext';
+import { TodayHabitContainer } from './TodayHabit';
+import { BsCheckSquareFill, BsFillXSquareFill } from 'react-icons/bs';
 
 const History = () => {
-    const [value, setValue] = useState(new Date());
+    const dateOptions = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+    };
+
+    const [date, setDate] = useState(new Date());
     const [habitsHistory, setHabitsHistory] = useState([]);
     const { user } = useContext(UserContext);
+    const [dateHabits, setDateHabits] = useState();
 
     const getHabisHistory = () => {
         const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily`;
@@ -24,6 +33,13 @@ const History = () => {
             .get(URL, config)
             .then((response) => {
                 setHabitsHistory(response.data);
+                setDateHabits(
+                    response.data.find(
+                        (habit) =>
+                            habit.day ===
+                            date.toLocaleDateString('pt-br', dateOptions)
+                    )
+                );
             })
             .catch((err) => {
                 alert(err.response.data.message);
@@ -32,30 +48,63 @@ const History = () => {
 
     useEffect(() => {
         getHabisHistory();
+        // console.log('effect render');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        setDateHabits(
+            habitsHistory.find(
+                (habit) =>
+                    habit.day === date.toLocaleDateString('pt-br', dateOptions)
+            )
+        );
+        // console.log('effect date');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [date]);
+
+    // console.log('render', dateHabits);
 
     return (
         <HistoryContainer>
             <div className="header">
                 <h1>Historico</h1>
             </div>
-            {/* <div className="soon">
-                <p>
-                    Em breve você poderá ver o histórico dos seus hábitos aqui!
-                </p>
-            </div> */}
             <Calendar
                 className="react-calendar"
-                value={value}
-                onChange={(value, index) => {
-                    setValue(value);
-                    console.log(value);
-                }}
+                value={date}
+                onChange={setDate}
+                // formatDay ={}
             />
-            <button onClick={() => console.log(habitsHistory)}>
-                console.log
-            </button>
+            {/* <button onClick={() => console.log(habitsHistory)}>
+                console.log histórico de hábitos
+            </button> */}
+            <div className="date-habits">
+                {dateHabits ? (
+                    dateHabits.habits.map((habit) => (
+                        <TodayHabitContainer
+                            className="date-habit"
+                            key={habit.id}
+                        >
+                            <h1>{habit.name}</h1>
+                            {habit.done ? (
+                                <BsCheckSquareFill
+                                    className="check"
+                                    fill={'#8FC549'}
+                                />
+                            ) : (
+                                <BsFillXSquareFill
+                                    className="check"
+                                    fill={'#eb3d3a'}
+                                />
+                            )}
+                        </TodayHabitContainer>
+                    ))
+                ) : (
+                    <h1>Não existem habitos para o dia selecionado</h1>
+                )}
+            </div>
+            {/* <div className="date-habits">{JSON.stringify(dateHabits)}</div> */}
         </HistoryContainer>
     );
 };
@@ -74,6 +123,18 @@ const HistoryContainer = styled.div`
     background: #e5e5e5;
     overflow-y: auto;
 
+    .date-habits {
+        margin-top: 50px;
+
+        h1 {
+            font-family: 'Lexend Deca';
+            font-size: 20px;
+            line-height: 25px;
+            color: #666666;
+            margin-bottom: 7px;
+        }
+    }
+
     .header {
         display: flex;
         justify-content: space-between;
@@ -87,18 +148,9 @@ const HistoryContainer = styled.div`
         }
     }
 
-    .soon {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-
-        p {
-            font-family: 'Lexend Deca';
-            font-size: 18px;
-            line-height: 22px;
-            color: #666666;
-        }
+    .react-calendar {
+        width: 100%;
+        border-radius: 10px;
     }
     /* 
     .react-calendar {

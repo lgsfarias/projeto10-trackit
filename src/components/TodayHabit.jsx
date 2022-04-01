@@ -37,10 +37,10 @@ const TodayHabitContainer = styled.div`
     justify-content: center;
     align-items: flex-start;
     width: 100%;
-    height: 94px;
+    min-height: 94px;
     background: #ffffff;
     border-radius: 5px;
-    padding: 13px;
+    padding: 13px 94px 13px 13px;
     margin-bottom: 10px;
 
     h1 {
@@ -77,3 +77,5 @@ const TodayHabitContainer = styled.div`
         cursor: pointer;
     }
 `;
+
+export { TodayHabitContainer };

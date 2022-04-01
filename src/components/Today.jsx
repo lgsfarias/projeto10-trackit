@@ -1,15 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import * as dayjs from 'dayjs';
 import axios from 'axios';
 
 import UserContext from '../contexts/UserContext';
 import TodayHabit from './TodayHabit';
 
 const Today = () => {
+    const today = new Date();
     const [todayHabits, setTodayHabits] = useState();
     const { user, completedStatus, setCompletedStatus } =
         useContext(UserContext);
+
+    const dateOptions = {
+        weekday: 'long',
+        month: 'numeric',
+        day: 'numeric',
+    };
 
     const todayHabitsBuilder = () => {
         return todayHabits.map((habit) => {
@@ -84,7 +90,15 @@ const Today = () => {
     return (
         <TodayContainer todayHabits={todayHabits}>
             <div className="header">
-                <h1>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
+                <h1>
+                    {today
+                        .toLocaleDateString('pt-br', dateOptions)
+                        .split('-')
+                        .map(
+                            (str) => str.charAt(0).toUpperCase() + str.slice(1)
+                        )
+                        .join('-')}
+                </h1>
                 {todayHabits ? (
                     completedStatus > 0 ? (
                         <p className="habits-done">
