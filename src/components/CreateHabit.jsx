@@ -110,12 +110,13 @@ export default CreateHabit;
 const CreateHabitForm = styled.div`
     position: relative;
     width: 100%;
-    height: ${(props) => (props.formHabitVisible ? '180px' : '0px')};
+    min-height: ${(props) => (props.formHabitVisible ? '180px' : '0px')};
     background-color: #fff;
     border-radius: 5px;
     padding: ${(props) => (props.formHabitVisible ? '15px' : '0px')};
     margin-bottom: ${(props) => (props.formHabitVisible ? '30px' : '0px')};
     opacity: ${(props) => (props.formHabitVisible ? '1' : '0')};
+    overflow: hidden;
     transition: 1s;
 
     input {
@@ -137,7 +138,6 @@ const CreateHabitForm = styled.div`
 
     .days {
         margin-top: 10px;
-        margin-bottom: 65px;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;

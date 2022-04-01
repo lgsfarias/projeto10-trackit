@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 import React, { useState, useEffect, useContext } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import axios from 'axios';
 
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 import UserContext from '../contexts/UserContext';
 import { TodayHabitContainer } from './TodayHabit';
 import { BsCheckSquareFill, BsFillXSquareFill } from 'react-icons/bs';
 
 const History = () => {
+    const today = new Date();
     const dateOptions = {
         year: 'numeric',
         month: 'numeric',
@@ -74,6 +75,53 @@ const History = () => {
                 className="react-calendar"
                 value={date}
                 onChange={setDate}
+                calendarType={'US'}
+                maxDate={today}
+                tileClassName={({ date }) => {
+                    const history = habitsHistory.map((day) => {
+                        return {
+                            day: day.day,
+                            allDone:
+                                day.habits.filter((habit) => habit.done)
+                                    .length === day.habits.length,
+                        };
+                    });
+
+                    const allDones = history
+                        .filter((day) => day.allDone)
+                        .map((day) => day.day);
+                    const notAllDone = history
+                        .filter((day) => !day.allDone)
+                        .map((day) => day.day);
+                    // console.log(date, today);
+
+                    if (
+                        date.toLocaleDateString('pt-br', dateOptions) !==
+                        today.toLocaleDateString('pt-br', dateOptions)
+                    ) {
+                        if (
+                            allDones.includes(
+                                date.toLocaleDateString('pt-br', dateOptions)
+                            )
+                        ) {
+                            return 'react-calendar-tile--all-done';
+                        } else if (
+                            notAllDone.includes(
+                                date.toLocaleDateString('pt-br', dateOptions)
+                            )
+                        ) {
+                            return 'react-calendar-tile--not-all-done';
+                        } else {
+                            return 'react-calendar-tile';
+                        }
+                    }
+                }}
+                // tileContent={({ date, view }) =>
+                //     view === 'month' && date.getDay() === 0 ? (
+                //         <p>It's Sunday!</p>
+                //     ) : null
+                // }
+                // formatDay={}
                 // formatDay ={}
             />
             {/* <button onClick={() => console.log(habitsHistory)}>
@@ -81,25 +129,28 @@ const History = () => {
             </button> */}
             <div className="date-habits">
                 {dateHabits ? (
-                    dateHabits.habits.map((habit) => (
-                        <TodayHabitContainer
-                            className="date-habit"
-                            key={habit.id}
-                        >
-                            <h1>{habit.name}</h1>
-                            {habit.done ? (
-                                <BsCheckSquareFill
-                                    className="check"
-                                    fill={'#8FC549'}
-                                />
-                            ) : (
-                                <BsFillXSquareFill
-                                    className="check"
-                                    fill={'#eb3d3a'}
-                                />
-                            )}
-                        </TodayHabitContainer>
-                    ))
+                    <>
+                        <h1>Habitos do dia selecionado:</h1>
+                        {dateHabits.habits.map((habit) => (
+                            <TodayHabitContainer
+                                className="date-habit"
+                                key={habit.id}
+                            >
+                                <h1>{habit.name}</h1>
+                                {habit.done ? (
+                                    <BsCheckSquareFill
+                                        className="check"
+                                        fill={'#8FC549'}
+                                    />
+                                ) : (
+                                    <BsFillXSquareFill
+                                        className="check"
+                                        fill={'#eb3d3a'}
+                                    />
+                                )}
+                            </TodayHabitContainer>
+                        ))}
+                    </>
                 ) : (
                     <h1>Não existem habitos para o dia selecionado</h1>
                 )}
@@ -122,6 +173,24 @@ const HistoryContainer = styled.div`
     padding: 28px 18px;
     background: #e5e5e5;
     overflow-y: auto;
+
+    .react-calendar {
+        /* margin: 0 auto; */
+        width: 100%;
+    }
+
+    .react-calendar-tile {
+        &--all-done {
+            background: #8fc549;
+            color: #000;
+            /* border-radius: 50%; */
+        }
+        &--not-all-done {
+            background: #eb3d3a;
+            color: #fff;
+            /* border-radius: 50%; */
+        }
+    }
 
     .date-habits {
         margin-top: 50px;
@@ -148,10 +217,12 @@ const HistoryContainer = styled.div`
         }
     }
 
-    .react-calendar {
+    /* .react-calendar {
         width: 100%;
+        min-height: 272px;
+        overflow: hidden;
         border-radius: 10px;
-    }
+    } */
     /* 
     .react-calendar {
         width: 350px;
