@@ -77,9 +77,7 @@ const Today = () => {
     };
 
     useEffect(() => {
-        if (localStorage.getItem('user')) {
-            listTodayHabits();
-        }
+        listTodayHabits();
         // eslint-disable-next-line
     }, []);
 

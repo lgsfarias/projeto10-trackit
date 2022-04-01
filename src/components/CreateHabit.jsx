@@ -182,7 +182,7 @@ const CreateHabitForm = styled.div`
         flex-direction: row;
         justify-content: flex-end;
         align-items: center;
-        display: ${(props) => (props.formHabitVisible ? 'flex' : 'none')};
+        pointer-events: ${(props) => (props.formHabitVisible ? 'all' : 'none')};
         opacity: ${(props) => (props.formHabitVisible ? '1' : '0')};
         transition: 1s;
 
