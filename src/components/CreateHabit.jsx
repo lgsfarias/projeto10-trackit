@@ -89,9 +89,13 @@ const CreateHabit = ({ formHabitVisible, setFormHabitVisible, listHabits }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setLoading(true);
-        createHabit();
-        setHabit({ name: '', days: [] });
+        if (habit.days.length > 0) {
+            setLoading(true);
+            createHabit();
+            setHabit({ name: '', days: [] });
+        } else {
+            alert('Selecione pelo menos um dia da semana');
+        }
     };
 
     return (
