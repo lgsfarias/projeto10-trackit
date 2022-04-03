@@ -99,7 +99,7 @@ const Today = () => {
                         )
                         .join('-')}
                 </h1>
-                {todayHabits ? (
+                {todayHabits && !isNaN(completedStatus) ? (
                     completedStatus > 0 ? (
                         <p className="habits-done">
                             {completedStatus.toFixed()}% dos hábitos concluídos
@@ -114,7 +114,7 @@ const Today = () => {
                 )}
             </div>
             <div className="today">
-                {todayHabits ? (
+                {todayHabits && !isNaN(completedStatus) ? (
                     todayHabitsBuilder()
                 ) : (
                     <p>Você não tem habitos para hoje</p>
