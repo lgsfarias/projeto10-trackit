@@ -36,7 +36,7 @@ const CreateHabit = ({ formHabitVisible, setFormHabitVisible, listHabits }) => {
     const daysBuilder = () => {
         const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
         return weekDays.map((day, index) => {
-            const css = habit.days.includes(index === 0 ? 7 : index)
+            const css = habit.days.includes(index)
                 ? 'habit-day habit-day--active'
                 : 'habit-day habit-day--inactive';
             return (
@@ -44,7 +44,7 @@ const CreateHabit = ({ formHabitVisible, setFormHabitVisible, listHabits }) => {
                     key={index}
                     className={css}
                     onClick={() => {
-                        if (!loading) toggle(index === 0 ? 7 : index);
+                        if (!loading) toggle(index);
                     }}
                 >
                     <p>{day}</p>

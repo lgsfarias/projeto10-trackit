@@ -13,7 +13,7 @@ const Habits = () => {
     const daysBuilder = ({ days }) => {
         const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
         return weekDays.map((day, index) => {
-            const css = days.includes(index === 0 ? 7 : index)
+            const css = days.includes(index)
                 ? 'habit-day habit-day--active'
                 : 'habit-day habit-day--inactive';
             return (
@@ -139,6 +139,23 @@ const HabitsContainer = styled.div`
     padding: 28px 18px;
     background: #e5e5e5;
     overflow-y: auto;
+
+    ::-webkit-scrollbar {
+        width: 7px;
+    }
+
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
 
     .header {
         display: flex;
