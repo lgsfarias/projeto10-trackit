@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -104,25 +105,19 @@ const History = () => {
                                 date.toLocaleDateString('pt-br', dateOptions)
                             )
                         ) {
-                            return 'react-calendar-tile--all-done';
+                            return 'react-calendar__tile--all-done';
                         } else if (
                             notAllDone.includes(
                                 date.toLocaleDateString('pt-br', dateOptions)
                             )
                         ) {
-                            return 'react-calendar-tile--not-all-done';
+                            return 'react-calendar__tile--not-all-done';
                         } else {
-                            return 'react-calendar-tile';
+                            return 'react-calendar__tile';
                         }
                     }
                 }}
-                // tileContent={({ date, view }) =>
-                //     view === 'month' && date.getDay() === 0 ? (
-                //         <p>It's Sunday!</p>
-                //     ) : null
-                // }
-                // formatDay={}
-                // formatDay ={}
+                formatDay={(locale, date) => <p>{dayjs(date).format('DD')}</p>}
             />
             {/* <button onClick={() => console.log(habitsHistory)}>
                 console.log histórico de hábitos
@@ -130,7 +125,15 @@ const History = () => {
             <div className="date-habits">
                 {dateHabits ? (
                     <>
-                        <h1>Habitos do dia selecionado:</h1>
+                        <h1>
+                            Habitos do dia{' '}
+                            {date.toLocaleDateString('pt-br', {
+                                year: 'numeric',
+                                month: 'numeric',
+                                day: 'numeric',
+                            })}
+                            :
+                        </h1>
                         {dateHabits.habits.map((habit) => (
                             <TodayHabitContainer
                                 className="date-habit"
@@ -152,7 +155,14 @@ const History = () => {
                         ))}
                     </>
                 ) : (
-                    <h1>Não existem habitos para o dia selecionado</h1>
+                    <h1>
+                        Não existem habitos para o dia{' '}
+                        {date.toLocaleDateString('pt-br', {
+                            year: 'numeric',
+                            month: 'numeric',
+                            day: 'numeric',
+                        })}
+                    </h1>
                 )}
             </div>
             {/* <div className="date-habits">{JSON.stringify(dateHabits)}</div> */}
@@ -175,20 +185,86 @@ const HistoryContainer = styled.div`
     overflow-y: auto;
 
     .react-calendar {
-        /* margin: 0 auto; */
         width: 100%;
-    }
+        border: none;
+        border-radius: 10px;
 
-    .react-calendar-tile {
-        &--all-done {
-            background: #8fc549;
-            color: #000;
-            /* border-radius: 50%; */
+        &__navigation button:last-child {
+            border-top-right-radius: 10px;
         }
-        &--not-all-done {
-            background: #eb3d3a;
-            color: #fff;
-            /* border-radius: 50%; */
+
+        &__tile {
+            height: 54px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            &:last-child {
+                border-bottom-right-radius: 10px;
+            }
+
+            &:nth-last-child(7) {
+                border-bottom-left-radius: 10px;
+            }
+
+            &--all-done {
+                p {
+                    background: #8fc549;
+                    color: #000;
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                }
+            }
+            &--not-all-done {
+                p {
+                    background: #eb3d3a;
+                    color: #fff;
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                }
+            }
+            &--active {
+                background: #fff;
+                p {
+                    background: #006edc;
+                    color: white;
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                }
+
+                &:enabled {
+                    &:hover,
+                    &:focus {
+                        background: #fff;
+                        p {
+                            background: #1087ff;
+                            border-radius: 50%;
+                            width: 40px;
+                            height: 40px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -216,187 +292,4 @@ const HistoryContainer = styled.div`
             color: #126ba5;
         }
     }
-
-    /* .react-calendar {
-        width: 100%;
-        min-height: 272px;
-        overflow: hidden;
-        border-radius: 10px;
-    } */
-    /* 
-    .react-calendar {
-        width: 350px;
-        max-width: 100%;
-        background: white;
-        border: 1px solid rgb(160, 160, 150);
-        font-family: Arial, Helvetica, sans-serif;
-        line-height: 1.125em;
-
-        &--doubleView {
-            width: 700px;
-
-            .react-calendar__viewContainer {
-                display: flex;
-                margin: -0.5em;
-
-                > * {
-                    width: 50%;
-                    margin: 0.5em;
-                }
-            }
-        }
-
-        &,
-        & *,
-        & *:before,
-        & *:after {
-            -moz-box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-        }
-
-        button {
-            margin: 0;
-            border: 0;
-            outline: none;
-
-            &:enabled {
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-        }
-
-        &__navigation {
-            display: flex;
-            height: 44px;
-            margin-bottom: 1em;
-
-            button {
-                min-width: 44px;
-                background: none;
-
-                &:disabled {
-                    background-color: rgb(240, 240, 240);
-                }
-
-                &:enabled {
-                    &:hover,
-                    &:focus {
-                        background-color: rgb(230, 230, 230);
-                    }
-                }
-            }
-        }
-
-        &__month-view {
-            &__weekdays {
-                text-align: center;
-                text-transform: uppercase;
-                font-weight: bold;
-                font-size: 0.75em;
-
-                &__weekday {
-                    padding: 0.5em;
-                }
-            }
-
-            &__weekNumbers {
-                .react-calendar__tile {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 0.75em;
-                    font-weight: bold;
-                }
-            }
-
-            &__days {
-                &__day {
-                    &--weekend {
-                        color: rgb(209, 0, 0);
-                    }
-
-                    &--neighboringMonth {
-                        color: rgb(117, 117, 117);
-                    }
-                }
-            }
-        }
-
-        &__year-view,
-        &__decade-view,
-        &__century-view {
-            .react-calendar__tile {
-                padding: 2em 0.5em;
-            }
-        }
-
-        &__tile {
-            max-width: 100%;
-            padding: 10px 6.6667px;
-            background: none;
-            text-align: center;
-            line-height: 16px;
-
-            &:disabled {
-                background-color: rgb(240, 240, 240);
-            }
-
-            &:enabled {
-                &:hover,
-                &:focus {
-                    background-color: rgb(230, 230, 230);
-                }
-            }
-
-            &--now {
-                background: lighten(rgb(220, 220, 0), 30%);
-
-                &:enabled {
-                    &:hover,
-                    &:focus {
-                        background: lighten(
-                            lighten(rgb(220, 220, 0), 30%),
-                            10%
-                        );
-                    }
-                }
-            }
-
-            &--hasActive {
-                background: lighten(rgb(0, 110, 220), 30%);
-
-                &:enabled {
-                    &:hover,
-                    &:focus {
-                        background: lighten(
-                            lighten(rgb(0, 110, 220), 30%),
-                            10%
-                        );
-                    }
-                }
-            }
-
-            &--active {
-                background: rgb(0, 110, 220);
-                color: white;
-
-                &:enabled {
-                    &:hover,
-                    &:focus {
-                        background: lighten(rgb(0, 110, 220), 10%);
-                    }
-                }
-            }
-        }
-
-        &--selectRange {
-            .react-calendar__tile {
-                &--hover {
-                    background-color: rgb(230, 230, 230);
-                }
-            }
-        }
-    } */
 `;
