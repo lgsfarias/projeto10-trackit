@@ -72,7 +72,7 @@ const SignUp = () => {
                 <input
                     onChange={(e) => setImage(e.target.value)}
                     type="text"
-                    placeholder="foto"
+                    placeholder="URL da imagem"
                     required
                     value={image}
                     disabled={loading ? true : false}
