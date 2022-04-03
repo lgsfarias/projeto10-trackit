@@ -19,8 +19,30 @@ const History = () => {
 
     const [date, setDate] = useState(new Date());
     const [habitsHistory, setHabitsHistory] = useState([]);
-    const { user } = useContext(UserContext);
+    const { user, setCompletedStatus } = useContext(UserContext);
     const [dateHabits, setDateHabits] = useState();
+
+    const listTodayHabits = () => {
+        const URL =
+            'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today';
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        };
+        axios
+            .get(URL, config)
+            .then((response) => {
+                setCompletedStatus(
+                    (response.data.filter((habit) => habit.done).length /
+                        response.data.length) *
+                        100
+                );
+            })
+            .catch((err) => {
+                alert(err.response.data.message);
+            });
+    };
 
     const getHabisHistory = () => {
         const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily`;
@@ -50,7 +72,7 @@ const History = () => {
 
     useEffect(() => {
         getHabisHistory();
-        // console.log('effect render');
+        listTodayHabits();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

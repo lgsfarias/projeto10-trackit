@@ -8,7 +8,7 @@ import CreateHabit from './CreateHabit';
 const Habits = () => {
     const [habits, setHabits] = useState();
     const [formHabitVisible, setFormHabitVisible] = useState(false);
-    const { user } = useContext(UserContext);
+    const { user, setCompletedStatus } = useContext(UserContext);
 
     const daysBuilder = ({ days }) => {
         const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
@@ -22,6 +22,28 @@ const Habits = () => {
                 </div>
             );
         });
+    };
+
+    const listTodayHabits = () => {
+        const URL =
+            'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today';
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        };
+        axios
+            .get(URL, config)
+            .then((response) => {
+                setCompletedStatus(
+                    (response.data.filter((habit) => habit.done).length /
+                        response.data.length) *
+                        100
+                );
+            })
+            .catch((err) => {
+                alert(err.response.data.message);
+            });
     };
 
     const listHabits = () => {
@@ -52,12 +74,19 @@ const Habits = () => {
                 },
             };
 
-            axios.delete(URL, config).then(listHabits).catch(alert);
+            axios
+                .delete(URL, config)
+                .then((response) => {
+                    listHabits();
+                    listTodayHabits();
+                })
+                .catch(alert);
         }
     };
 
     useEffect(() => {
         listHabits();
+        listTodayHabits();
         // eslint-disable-next-line  react-hooks/exhaustive-deps
     }, []);
 

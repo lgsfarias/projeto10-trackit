@@ -9,7 +9,29 @@ const CreateHabit = ({ formHabitVisible, setFormHabitVisible, listHabits }) => {
     const [habit, setHabit] = useState({ name: '', days: [] });
     const [loading, setLoading] = useState(false);
 
-    const { user } = useContext(UserContext);
+    const { user, setCompletedStatus } = useContext(UserContext);
+
+    const listTodayHabits = () => {
+        const URL =
+            'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today';
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        };
+        axios
+            .get(URL, config)
+            .then((response) => {
+                setCompletedStatus(
+                    (response.data.filter((habit) => habit.done).length /
+                        response.data.length) *
+                        100
+                );
+            })
+            .catch((err) => {
+                alert(err.response.data.message);
+            });
+    };
 
     const daysBuilder = () => {
         const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
@@ -57,6 +79,7 @@ const CreateHabit = ({ formHabitVisible, setFormHabitVisible, listHabits }) => {
                 listHabits();
                 setFormHabitVisible(false);
                 setLoading(false);
+                listTodayHabits();
             })
             .catch((err) => {
                 alert(err.response.data.message);

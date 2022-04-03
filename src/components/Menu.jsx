@@ -16,7 +16,7 @@ const Menu = () => {
             <Link to="/hoje">
                 <CircularProgressbar
                     className="progressbar"
-                    value={completedStatus}
+                    value={!isNaN(completedStatus) ? completedStatus : 100}
                     text={'Hoje'}
                     background={true}
                     backgroundPadding={6}
