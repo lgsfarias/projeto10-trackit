@@ -3,11 +3,15 @@ import styled from 'styled-components';
 import { BsTrash } from 'react-icons/bs';
 import UserContext from '../contexts/UserContext';
 import axios from 'axios';
+
 import CreateHabit from './CreateHabit';
+import PopUpDeleteHabit from './PopUpDeleteHabit';
 
 const Habits = () => {
     const [habits, setHabits] = useState();
     const [formHabitVisible, setFormHabitVisible] = useState(false);
+    const [popUpVisible, setPopUpVisible] = useState(false);
+    const [id, setId] = useState();
     const { user, setCompletedStatus } = useContext(UserContext);
 
     const daysBuilder = ({ days }) => {
@@ -111,7 +115,11 @@ const Habits = () => {
                             <div className="days">{daysBuilder({ days })}</div>
                             <BsTrash
                                 className="trash"
-                                onClick={() => deleteHabit(id)}
+                                // onClick={() => deleteHabit(id)}
+                                onClick={() => {
+                                    setId(id);
+                                    setPopUpVisible(true);
+                                }}
                             />
                         </div>
                     ))
@@ -122,6 +130,14 @@ const Habits = () => {
                     </p>
                 )}
             </div>
+            <PopUpDeleteHabit
+                popUpVisible={popUpVisible}
+                setPopUpVisible={setPopUpVisible}
+                id={id}
+                deleteHabit={deleteHabit}
+                listHabits={listHabits}
+                listTodayHabits={listTodayHabits}
+            />
         </HabitsContainer>
     );
 };
