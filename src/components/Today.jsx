@@ -8,6 +8,7 @@ import TodayHabit from './TodayHabit';
 const Today = () => {
     const today = new Date();
     const [todayHabits, setTodayHabits] = useState();
+    const [loading, setLoading] = useState(false);
     const { user, completedStatus, setCompletedStatus } =
         useContext(UserContext);
 
@@ -23,7 +24,11 @@ const Today = () => {
                 <TodayHabit
                     key={habit.id}
                     habit={habit}
-                    handleClick={() => toggle(habit.id)}
+                    loading={loading}
+                    handleClick={() => {
+                        setLoading(true);
+                        toggle(habit.id);
+                    }}
                 />
             );
         });
@@ -44,7 +49,12 @@ const Today = () => {
             },
         };
 
-        axios.post(URL, null, config).then(listTodayHabits).catch(alert);
+        axios
+            .post(URL, null, config)
+            .then((response) => {
+                listTodayHabits();
+            })
+            .catch((err) => alert(err.response.data.message));
     };
 
     const uncheckHabit = (id) => {
@@ -56,7 +66,12 @@ const Today = () => {
             },
         };
 
-        axios.post(URL, null, config).then(listTodayHabits).catch(alert);
+        axios
+            .post(URL, null, config)
+            .then((response) => {
+                listTodayHabits();
+            })
+            .catch((err) => alert(err.response.data.message));
     };
 
     const listTodayHabits = () => {
@@ -70,6 +85,7 @@ const Today = () => {
         axios
             .get(URL, config)
             .then((response) => {
+                setLoading(false);
                 setTodayHabits(response.data);
                 setCompletedStatus(
                     (response.data.filter((habit) => habit.done).length /
