@@ -62,6 +62,9 @@ const HeaderContainer = styled.div`
         padding: ${({ menuVisible }) => (menuVisible ? '10px' : '0')};
         box-shadow: ${({ menuVisible }) =>
             menuVisible ? 'inset -2px 1px 6px 1px rgba(0, 0, 0, 0.1)' : 'none'};
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
         transition: all 0.3s ease-in-out;
 
         p {
