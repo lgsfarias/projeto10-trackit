@@ -143,6 +143,9 @@ const CreateHabitForm = styled.div`
     padding: ${(props) => (props.formHabitVisible ? '15px' : '0px')};
     margin-bottom: ${(props) => (props.formHabitVisible ? '30px' : '0px')};
     opacity: ${(props) => (props.formHabitVisible ? '1' : '0')};
+    -webkit-transition: 1s;
+    -moz-transition: 1s;
+    -o-transition: 1s;
     transition: 1s;
 
     input {
@@ -211,6 +214,9 @@ const CreateHabitForm = styled.div`
         align-items: center;
         pointer-events: ${(props) => (props.formHabitVisible ? 'all' : 'none')};
         opacity: ${(props) => (props.formHabitVisible ? '1' : '0')};
+        -webkit-transition: 1s;
+        -moz-transition: 1s;
+        -o-transition: 1s;
         transition: 1s;
 
         p {
