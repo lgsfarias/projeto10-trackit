@@ -147,6 +147,7 @@ const CreateHabitForm = styled.div`
     -moz-transition: 1s;
     -o-transition: 1s;
     transition: 1s;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
 
     input {
         width: 100%;
@@ -172,6 +173,11 @@ const CreateHabitForm = styled.div`
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
+        opacity: ${(props) => (props.formHabitVisible ? '1' : '0')};
+        -webkit-transition: 0.5s;
+        -moz-transition: 0.5s;
+        -o-transition: 0.5s;
+        transition: 0.5s;
 
         .habit-day {
             font-family: 'Lexend Deca';
@@ -214,10 +220,10 @@ const CreateHabitForm = styled.div`
         align-items: center;
         pointer-events: ${(props) => (props.formHabitVisible ? 'all' : 'none')};
         opacity: ${(props) => (props.formHabitVisible ? '1' : '0')};
-        -webkit-transition: 1s;
-        -moz-transition: 1s;
-        -o-transition: 1s;
-        transition: 1s;
+        -webkit-transition: 0.5s;
+        -moz-transition: 0.5s;
+        -o-transition: 0.5s;
+        transition: 0.5s;
 
         p {
             font-family: 'Lexend Deca';

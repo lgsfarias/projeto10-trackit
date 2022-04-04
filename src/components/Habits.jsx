@@ -212,6 +212,7 @@ const HabitsContainer = styled.div`
             border-radius: 5px;
             margin-bottom: 10px;
             padding: 15px;
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 
             p {
                 font-family: 'Lexend Deca';

@@ -59,6 +59,7 @@ const MenuContainer = styled.div`
     align-items: center;
     padding: 0 30px;
     background-color: #fff;
+    box-shadow: 0px -2px 2px rgba(0, 0, 0, 0.2);
 
     p {
         font-family: 'Lexend Deca';

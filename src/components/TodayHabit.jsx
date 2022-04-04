@@ -50,6 +50,7 @@ const TodayHabitContainer = styled.div`
     border-radius: 5px;
     padding: 13px 94px 13px 13px;
     margin-bottom: 10px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
 
     h1 {
         font-family: 'Lexend Deca';
